@@ -16,7 +16,7 @@ React Native App to show the weather of user location
 
 Designed with Figma, available in:
 
-- [Web](https://www.figma.com/file/8vfwHH51457eFWXEP3arMW/Nice-Weather?node-id=0%3A1).
+- [Nice Weather](https://www.figma.com/file/8vfwHH51457eFWXEP3arMW/Nice-Weather?node-id=0%3A1).
 
 ## Running the project
 
