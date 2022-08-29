@@ -22,7 +22,7 @@ Designed with Figma, available in:
 
 ```bash
 # 1. Clone thie repo
-git clone https://github.com/LOST-UFG/SAD.git
+git clone https://github.com/fernandosev/nice-weather.git
 
 # 2. Access the project folder
 cd nice-weather
