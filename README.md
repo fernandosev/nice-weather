@@ -18,7 +18,7 @@ Designed with Figma, available in:
 
 - [Web](https://www.figma.com/file/8vfwHH51457eFWXEP3arMW/Nice-Weather?node-id=0%3A1).
 
-## Run the project
+## Running the project
 
 ```bash
 # 1. Clone thie repo
@@ -41,7 +41,7 @@ $ yarn start
 
 ```
 
-## Run the tests
+## Running the tests
 
 ```bash
 $ yarn test
