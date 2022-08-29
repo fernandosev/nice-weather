@@ -22,29 +22,29 @@ Designed with Figma, available in:
 
 ```bash
 # 1. Clone thie repo
-$ git clone https://github.com/LOST-UFG/SAD.git
+git clone https://github.com/LOST-UFG/SAD.git
 
 # 2. Access the project folder
-$ cd nice-weather
+cd nice-weather
 
 # 3. Install the dependencies
-$ yarn # or $ npm install
+yarn # or $ npm install
 
 # 4. Create a .env file on root project folder
 
 # 5. Add the following environment variables
-API_BASE_URL=''
-API_KEY_URL=''
+# API_BASE_URL=''
+# API_KEY_URL=''
 
 # 6. Run the application
-$ yarn start
+yarn start
 
 ```
 
 ## Running the tests
 
 ```bash
-$ yarn test
+yarn test
 
 ```
 
