@@ -1,27 +1,59 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {IInitialStateDTO} from './types';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+// @Types
+import { WeatherContitions } from "~/@types/weather";
+import { IInitialStateDTO } from "./types";
 
 const initialState = {
-  loading: false,
+  weatherLoading: false,
+  city: undefined,
+  temp: undefined,
+  weatherCondition: undefined,
+  description: undefined,
 } as IInitialStateDTO;
 
 const weather = createSlice({
-  name: 'weather',
+  name: "weather",
   initialState,
   reducers: {
-    testRequest(state, _payload) {
-      state.loading = true;
+    weatherRequest(
+      state,
+      _action: PayloadAction<{
+        lat: number;
+        long: number;
+        callbackFunction: (
+          messageType: "success" | "error",
+          messageText: string
+        ) => void;
+      }>
+    ) {
+      state.weatherLoading = true;
     },
 
-    testSuccess(state) {
-      state.loading = false;
+    weatherSuccess(
+      state,
+      action: PayloadAction<{
+        temp: number;
+        city: string;
+        weatherCondition: WeatherContitions;
+        description: string;
+      }>
+    ) {
+      const { temp, city, weatherCondition, description } = action.payload;
+
+      state.temp = temp;
+      state.city = city;
+      state.weatherCondition = weatherCondition;
+      state.description = description;
+      state.weatherLoading = false;
     },
 
-    testFailure(state) {
-      state.loading = false;
+    weatherFailure(state) {
+      state.weatherLoading = false;
     },
   },
 });
 
-export const {testRequest, testSuccess, testFailure} = weather.actions;
+export const { weatherRequest, weatherSuccess, weatherFailure } =
+  weather.actions;
 export default weather.reducer;

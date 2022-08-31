@@ -1,11 +1,7 @@
-import { WeatherContitions } from "~/@types/weather";
-
 export interface IInitialStateDTO {
-  weatherLoading: boolean;
-  temp?: number;
-  city?: string;
-  weatherCondition?: WeatherContitions;
-  description?: string;
+  locationLoading: boolean;
+  lat?: number;
+  long?: number;
 }
 
 export interface ResponseGenerator {

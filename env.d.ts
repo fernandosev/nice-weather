@@ -1,4 +1,4 @@
-declare module '@env' {
+declare module "@env" {
   const API_BASE_URL: string;
-  const API_KEy: string;
+  const API_KEY: string;
 }

@@ -1,55 +1,71 @@
-import {takeLatest, call, put, all} from 'redux-saga/effects';
+// Libs
+import { takeLatest, call, put, all } from "redux-saga/effects";
 
-import {api} from '~/services/api';
+// Api
+import { api } from "~/services/api";
 
-import {testRequest, testSuccess, testFailure} from './slice';
+// Sagas
+import { weatherRequest, weatherSuccess, weatherFailure } from "./slice";
 
-import {ResponseGenerator} from './types';
+// @Types
+import { ResponseGenerator } from "./types";
 
-export function* test({
+// @ENV
+import { API_BASE_URL, API_KEY } from "@env";
+
+export function* getCurrentWeather({
   payload,
 }: {
   payload: {
-    prop1: string;
+    lat: number;
+    long: number;
     callbackFunction: (
-      messageType: 'success' | 'error',
-      messageText: string,
+      messageType: "success" | "error",
+      messageText: string
     ) => void;
   };
 }) {
   const {
-    prop1,
+    lat,
+    long,
     callbackFunction,
   }: {
-    prop1?: string;
+    lat: number;
+    long: number;
     callbackFunction: (
-      messageType: 'success' | 'error',
-      messageText: string,
+      messageType: "success" | "error",
+      messageText: string
     ) => void;
   } = payload;
 
-  console.log(prop1);
+  console.log(API_KEY, API_BASE_URL, lat, long);
 
   try {
-    const response: ResponseGenerator = yield call(api.post, '/test2', {
-      prop1,
-    });
+    const response: ResponseGenerator = yield call(
+      api.get,
+      `/weather?lat=${lat}&lon=${long}&lang=pt_br&units=metric&exclude=hourly,daily&apikey=${API_KEY}`
+    );
 
     const data = response.data;
 
-    console.log(data);
-
-    yield put(testSuccess());
-    yield callbackFunction('success', '');
+    yield put(
+      weatherSuccess({
+        temp: data.main.temp,
+        city: data.name,
+        weatherCondition: data.weather[0].main,
+        description: data.weather[0].description,
+      })
+    );
+    yield callbackFunction("success", "");
   } catch (err: any) {
-    yield put(testFailure());
+    yield put(weatherFailure());
 
-    if (err.response?.data?.error_msg) {
-      yield callbackFunction('error', err.response.data.error_msg);
+    if (err.response?.data?.message) {
+      yield callbackFunction("error", err.response?.data?.message);
     } else {
-      yield callbackFunction('error', 'Server error. Try again later.');
+      yield callbackFunction("error", "Server error. Try again later.");
     }
   }
 }
 
-export default all([takeLatest(testRequest, test)]);
+export default all([takeLatest(weatherRequest, getCurrentWeather)]);
