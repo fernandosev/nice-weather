@@ -48,8 +48,8 @@ npx pod-install
 # 5. Create a .env file on root project folder
 
 # 6. Add the following environment variables
-# API_BASE_URL=''
-# API_KEY_URL=''
+# API_BASE_URL='https://api.openweathermap.org/data/2.5'
+# API_KEY_URL='' Obs.: You need to create a account in Open Weather Map to create a API_KEY_URL
 
 # 7. Run the application on android
 yarn android
