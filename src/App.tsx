@@ -1,6 +1,11 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useMemo } from "react";
-import { StyleSheet, PermissionsAndroid, Platform } from "react-native";
+import {
+  StyleSheet,
+  PermissionsAndroid,
+  Platform,
+  StatusBar,
+} from "react-native";
 
 // Libs
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -61,6 +66,7 @@ const App: React.FC = () => {
   );
 
   useEffect(() => {
+    StatusBar.setBarStyle("light-content", true);
     setCustomText(customTextProps);
   }, [customTextProps]);
 
