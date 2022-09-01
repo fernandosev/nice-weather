@@ -24,10 +24,10 @@ Designed with Figma, available in:
 #### Telas iniciais
 <img src="https://drive.google.com/uc?export=view&id=1sLQSqneaE_HSCCpDydHqY-2HsHXv3Z7G" width="600">
 
-#### Home 
+#### Home - day
 <img src="https://drive.google.com/uc?export=view&id=1B0csPdHE3xmrdjr54dr1V370rvxdkSpU" width="600">
 
-#### Home - noite
+#### Home - night
 <img src="https://drive.google.com/uc?export=view&id=1caFSOtiTqpU6s3DEXaymzgOreAXv53GI" width="600">
 
 ## Running the project
