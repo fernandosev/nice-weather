@@ -1,13 +1,13 @@
 // Libs
 import { takeLatest, put, all } from "redux-saga/effects";
-import Geolocation, { GeoPosition } from "react-native-geolocation-service";
+import Geolocation from "@react-native-community/geolocation";
 
 // Store
 import { locationRequest, locationSuccess, locationFailure } from "./slice";
 import { setGeolocationError } from "~/store/modules/location/slice";
 
 // Get current position
-function getPosition(options): Promise<GeoPosition> {
+function getPosition(options) {
   return new Promise((resolve, reject) =>
     Geolocation.getCurrentPosition(resolve, reject, options)
   );

@@ -1,13 +1,34 @@
-import React from 'react';
+import React from "react";
 
-import {render} from '@testing-library/react-native';
+import { render } from "@testing-library/react-native";
 
-import Home from '~/screens/Home';
+import Home from "~/screens/Home";
+import { renderWithProviders } from "~/utils/test-utils";
 
-test('Check title of the screen', () => {
-  const {getByText} = render(<Home />);
+describe("Home Screen", () => {
+  test("if user don't grandted location permission show the message", () => {
+    const message = "Permita que o app acesse a localização atual!";
 
-  const header = getByText('Nice Weather');
+    const { getByTestId } = renderWithProviders(<Home />, {
+      preloadedState: {
+        location: { locationLoading: false, isPermissionGranted: false },
+      },
+    });
 
-  expect(header).toBeTruthy();
+    const loadingText = getByTestId("loading-text");
+    expect(loadingText.props.children).toEqual(message);
+  });
+
+  test("if the app show the message when loading location data", () => {
+    const message = "Obtendo localização atual...";
+
+    const { getByTestId } = renderWithProviders(<Home />, {
+      preloadedState: {
+        location: { locationLoading: true, isPermissionGranted: true },
+      },
+    });
+
+    const loadingText = getByTestId("loading-text");
+    expect(loadingText.props.children).toEqual(message);
+  });
 });

@@ -183,7 +183,7 @@ const Home: React.FC = () => {
         !isPermissionGranted ||
         geolocationError) && (
         <LoadingContainer>
-          <LoadingText>{renderLoadingText()}</LoadingText>
+          <LoadingText testID="loading-text">{renderLoadingText()}</LoadingText>
         </LoadingContainer>
       )}
     </Container>

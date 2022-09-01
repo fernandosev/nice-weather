@@ -69,7 +69,7 @@ const Header: React.FC<{
         toValue: 1,
         duration: 1000,
         easing: Easing.linear,
-        useNativeDriver: true,
+        useNativeDriver: false,
       })
     );
 
@@ -116,7 +116,9 @@ const Header: React.FC<{
         <EmptyContainer />
       )}
       <TitleContainer>
-        <Title numberOfLines={1}>{title}</Title>
+        <Title testID="title" numberOfLines={1}>
+          {title}
+        </Title>
       </TitleContainer>
       {((rightButton !== undefined && rightButton.length > 0) ||
         actions.length > 0) && (

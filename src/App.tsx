@@ -5,7 +5,7 @@ import { StyleSheet, PermissionsAndroid, Platform } from "react-native";
 // Libs
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { setCustomText } from "react-native-global-props";
-import Geolocation from "react-native-geolocation-service";
+import { request, PERMISSIONS } from "react-native-permissions";
 
 // Routes
 import Routes from "./routes";
@@ -39,17 +39,15 @@ const App: React.FC = () => {
   };
 
   const requestLocationPermissionIOS = async () => {
-    try {
-      const granted = await Geolocation.requestAuthorization("whenInUse");
-
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        dispatch(setIsPermissionGranted({ granted: true }));
-      } else {
-        dispatch(setIsPermissionGranted({ granted: false }));
-      }
-    } catch (err) {
-      console.warn(err);
-    }
+    await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
+      .then((result) => {
+        if (result === "granted")
+          dispatch(setIsPermissionGranted({ granted: true }));
+        else dispatch(setIsPermissionGranted({ granted: false }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const customTextProps = useMemo(
