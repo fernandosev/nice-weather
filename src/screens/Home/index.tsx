@@ -192,9 +192,11 @@ const Home: React.FC = () => {
                 size={80}
                 color={colors.secondary}
               />
-              <TemperatureText>{`${Math.round(temp)}°C`}</TemperatureText>
+              <TemperatureText testID="temp-text">{`${Math.round(
+                temp
+              )}°C`}</TemperatureText>
             </TemperatureContainer>
-            <WeatherText>{description}</WeatherText>
+            <WeatherText testID="description-text">{description}</WeatherText>
           </CurrentWeatherContainer>
         )}
 
