@@ -54,7 +54,7 @@ const Home: React.FC = () => {
   };
 
   const getLocation = () => {
-    if (isPermissionGranted) {
+    if (isPermissionGranted && !geolocationError && !weatherLoading) {
       dispatch(clearWeatherData());
       dispatch(locationRequest());
     }
@@ -127,10 +127,13 @@ const Home: React.FC = () => {
 
   const renderLoadingText = () => {
     if (locationLoading) return "Obtendo localização atual...";
-    else if (!isPermissionGranted)
+    else if (!isPermissionGranted) {
       return "Permita que o app acesse a localização atual!";
-    else if (geolocationError) return "Ative a localização do dispositivo!";
-    else if (weatherLoading) return "Carregando dados climáticos...";
+    } else if (geolocationError) {
+      return "Ative a localização do dispositivo!";
+    } else if (weatherLoading) {
+      return "Carregando dados climáticos...";
+    }
   };
 
   return (
