@@ -19,7 +19,7 @@ Designed with Figma, available in:
 - [Nice Weather](https://www.figma.com/file/8vfwHH51457eFWXEP3arMW/Nice-Weather?node-id=0%3A1).
 
 #### Diagrama arquitetural
-<img src="https://drive.google.com/file/d/1sLQSqneaE_HSCCpDydHqY-2HsHXv3Z7G/view" width="600">
+<img src="https://drive.google.com/uc?export=view&id=1sLQSqneaE_HSCCpDydHqY-2HsHXv3Z7G" width="600">
 
 ## Running the project
 
