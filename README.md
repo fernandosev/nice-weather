@@ -42,14 +42,20 @@ cd nice-weather
 # 3. Install the dependencies
 yarn # or $ npm install
 
-# 4. Create a .env file on root project folder
+# 4. Install Pod for ios
+npx pod-install
 
-# 5. Add the following environment variables
+# 5. Create a .env file on root project folder
+
+# 6. Add the following environment variables
 # API_BASE_URL=''
 # API_KEY_URL=''
 
-# 6. Run the application
-yarn start
+# 7. Run the application on android
+yarn android
+
+# 8. Run the application on iOS
+yarn ios
 
 ```
 
