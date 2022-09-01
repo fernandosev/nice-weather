@@ -21,13 +21,13 @@ Designed with Figma, available in:
 #### Nice Weather
 <img src="https://drive.google.com/uc?export=view&id=1BU9gGMyfHnm_rWEgcwTL6sUiJNw_MeVb" width="150">
 
-#### Telas iniciais
+#### Screens
 <img src="https://drive.google.com/uc?export=view&id=1sLQSqneaE_HSCCpDydHqY-2HsHXv3Z7G" width="600">
 
-#### Home 
+#### Home - day
 <img src="https://drive.google.com/uc?export=view&id=1B0csPdHE3xmrdjr54dr1V370rvxdkSpU" width="600">
 
-#### Home - noite
+#### Home - night
 <img src="https://drive.google.com/uc?export=view&id=1caFSOtiTqpU6s3DEXaymzgOreAXv53GI" width="600">
 
 ## Running the project
@@ -42,14 +42,20 @@ cd nice-weather
 # 3. Install the dependencies
 yarn # or $ npm install
 
-# 4. Create a .env file on root project folder
+# 4. Install Pod for ios
+npx pod-install
 
-# 5. Add the following environment variables
+# 5. Create a .env file on root project folder
+
+# 6. Add the following environment variables
 # API_BASE_URL=''
 # API_KEY_URL=''
 
-# 6. Run the application
-yarn start
+# 7. Run the application on android
+yarn android
+
+# 8. Run the application on iOS
+yarn ios
 
 ```
 
