@@ -5,9 +5,9 @@ import { SvgProps } from "react-native-svg";
 
 const Icon: React.FC<{
   iconClass?: "Ionicons" | "MaterialCommunityIcons" | undefined;
-  name?: string | undefined;
-  color?: string | undefined;
-  size?: number | undefined;
+  name?: string;
+  color?: string;
+  size?: number;
   SVG?: FC<SvgProps>;
 }> = ({
   iconClass = "MaterialCommunityIcons",

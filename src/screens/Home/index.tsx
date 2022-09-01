@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 
 // Libs
 import moment from "moment";
@@ -42,13 +42,45 @@ const Home: React.FC = () => {
 
   const hour = moment().format("HH");
 
-  const getWeather = () => {
-    if (
-      !weatherLoading &&
-      !locationLoading &&
-      lat !== undefined &&
-      long !== undefined
-    ) {
+  const weatherData = useMemo(
+    () => ({
+      Night: { background: colors.night },
+      Clear: {
+        background: colors.clear,
+        dayIcon: "sunny-outline",
+        nightIcon: "moon-outline",
+      },
+      Clouds: {
+        background: colors.clouds,
+        dayIcon: "md-partly-sunny-outline",
+        nightIcon: "cloudy-night-outline",
+      },
+      Rain: {
+        background: colors.rain,
+        dayIcon: "rainy-outline",
+        nightIcon: "rainy-outline",
+      },
+      Drizzle: {
+        background: colors.drizzle,
+        dayIcon: "rainy-outline",
+        nightIcon: "rainy-outline",
+      },
+      Thunderstorm: {
+        background: colors.thunderstorm,
+        dayIcon: "thunderstorm-outline",
+        nightIcon: "thunderstorm-outline",
+      },
+      Snow: {
+        background: colors.snow,
+        dayIcon: "snow-outline",
+        nightIcon: "snow-outline",
+      },
+    }),
+    []
+  );
+
+  const getWeather = useCallback(() => {
+    if (lat !== undefined && long !== undefined) {
       dispatch(
         weatherRequest({
           lat,
@@ -57,9 +89,9 @@ const Home: React.FC = () => {
         })
       );
     }
-  };
+  }, [lat, long]);
 
-  const getLocation = () => {
+  const getLocation = useCallback(() => {
     if (
       isPermissionGranted &&
       !geolocationError &&
@@ -72,77 +104,46 @@ const Home: React.FC = () => {
       dispatch(clearWeatherData());
       dispatch(locationRequest());
     }
-  };
+  }, [
+    isPermissionGranted,
+    geolocationError,
+    weatherLoading,
+    city,
+    temp,
+    description,
+    weatherCondition,
+  ]);
 
-  const refreshWeather = () => {
+  const refreshWeather = useCallback(() => {
     dispatch(clearWeatherData());
-    dispatch(locationRequest());
-  };
+    getLocation();
+    getWeather();
+  }, [getLocation, getWeather]);
 
   useEffect(() => {
     getLocation();
-  }, [isPermissionGranted, weatherLoading]);
+  }, [getLocation]);
 
   useEffect(() => {
     getWeather();
-  }, [locationLoading]);
+  }, [getWeather]);
 
-  const renderNightIcon = (weather: WeatherContitions) => {
-    switch (weather) {
-      case WeatherContitions.clear:
-        return "moon-outline";
-      case WeatherContitions.clouds:
-        return "cloudy-night-outline";
-      case WeatherContitions.drizzle:
-        return "rainy-outline";
-      case WeatherContitions.rain:
-        return "rainy-outline";
-      case WeatherContitions.thunderstorm:
-        return "thunderstorm-outline";
-      case WeatherContitions.snow:
-        return "snow-outline";
-    }
-  };
-
-  const renderDayIcon = (weather: WeatherContitions) => {
-    switch (weather) {
-      case WeatherContitions.clear:
-        return "sunny-outline";
-      case WeatherContitions.clouds:
-        return "md-partly-sunny-outline";
-      case WeatherContitions.drizzle:
-        return "rainy-outline";
-      case WeatherContitions.rain:
-        return "rainy-outline";
-      case WeatherContitions.thunderstorm:
-        return "thunderstorm-outline";
-      case WeatherContitions.snow:
-        return "snow-outline";
-    }
-  };
-
-  const renderColor = (weather: WeatherContitions) => {
+  const renderColor = useCallback((weather: WeatherContitions) => {
     if ((hour >= "18" && hour <= "23") || (hour >= "00" && hour <= "05")) {
-      return colors.night;
+      return weatherData.Night.background;
     }
 
-    switch (weather) {
-      case WeatherContitions.clear:
-        return colors.clear;
-      case WeatherContitions.clouds:
-        return colors.clouds;
-      case WeatherContitions.rain:
-        return colors.rain;
-      case WeatherContitions.drizzle:
-        return colors.drizzle;
-      case WeatherContitions.thunderstorm:
-        return colors.thunderstorm;
-      case WeatherContitions.snow:
-        return colors.snow;
-    }
-  };
+    return weatherData[weather].background;
+  }, []);
 
-  const renderLoadingText = () => {
+  const renderIcon = useCallback((weather: WeatherContitions): string => {
+    if ((hour >= "18" && hour <= "23") || (hour >= "00" && hour <= "05"))
+      return weatherData[weather].nightIcon;
+
+    return weatherData[weather].dayIcon;
+  }, []);
+
+  const renderLoadingText = useCallback(() => {
     if (locationLoading) return "Obtendo localização atual...";
     else if (!isPermissionGranted) {
       return "Permita que o app acesse a localização atual!";
@@ -151,7 +152,7 @@ const Home: React.FC = () => {
     } else if (weatherLoading) {
       return "Carregando dados climáticos...";
     }
-  };
+  }, [locationLoading, isPermissionGranted, geolocationError, weatherLoading]);
 
   return (
     <Container
@@ -184,10 +185,9 @@ const Home: React.FC = () => {
               <Icon
                 iconClass="Ionicons"
                 name={
-                  (hour >= "18" && hour <= "23") ||
-                  (hour >= "00" && hour <= "05")
-                    ? renderNightIcon(weatherCondition)
-                    : renderDayIcon(weatherCondition)
+                  !weatherLoading && weatherCondition
+                    ? renderIcon(weatherCondition)
+                    : undefined
                 }
                 size={80}
                 color={colors.secondary}
