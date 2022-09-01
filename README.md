@@ -21,7 +21,7 @@ Designed with Figma, available in:
 #### Nice Weather
 <img src="https://drive.google.com/uc?export=view&id=1BU9gGMyfHnm_rWEgcwTL6sUiJNw_MeVb" width="150">
 
-#### Telas iniciais
+#### Screens
 <img src="https://drive.google.com/uc?export=view&id=1sLQSqneaE_HSCCpDydHqY-2HsHXv3Z7G" width="600">
 
 #### Home - day
