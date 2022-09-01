@@ -27,8 +27,8 @@ export default {
   night: "#04002b",
   clear: "#43a1ce",
   clouds: "#43a1ce",
-  rain: "#c9c9c9",
-  drizzle: "#c9c9c9",
+  rain: "#7e7e7e",
+  drizzle: "#7e7e7e",
   thunderstorm: "#7e7e7e",
-  snow: "#dddddd",
+  snow: "#7e7e7e",
 };

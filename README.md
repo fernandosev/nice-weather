@@ -4,8 +4,8 @@
 
 - [About this project](#-about-this-project)
 - [Layout](#-layout)
-- [Running the project](#-running-the-project)
-- [Running the tests](#-running-the-tests)
+- [Running the project](#running-the-project)
+- [Running the tests](#running-the-tests)
 - [Author](#-author)
 
 ## 📄 About this project
