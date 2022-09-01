@@ -54,8 +54,10 @@ const Home: React.FC = () => {
   };
 
   const getLocation = () => {
-    dispatch(clearWeatherData());
-    dispatch(locationRequest());
+    if (isPermissionGranted) {
+      dispatch(clearWeatherData());
+      dispatch(locationRequest());
+    }
   };
 
   useEffect(() => {
@@ -150,6 +152,8 @@ const Home: React.FC = () => {
 
       {!locationLoading &&
         !weatherLoading &&
+        isPermissionGranted &&
+        !geolocationError &&
         temp &&
         city &&
         weatherCondition &&
@@ -174,7 +178,10 @@ const Home: React.FC = () => {
           </CurrentWeatherContainer>
         )}
 
-      {(weatherLoading || locationLoading) && (
+      {(weatherLoading ||
+        locationLoading ||
+        !isPermissionGranted ||
+        geolocationError) && (
         <LoadingContainer>
           <LoadingText>{renderLoadingText()}</LoadingText>
         </LoadingContainer>
