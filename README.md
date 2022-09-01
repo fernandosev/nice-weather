@@ -18,8 +18,14 @@ Designed with Figma, available in:
 
 - [Nice Weather](https://www.figma.com/file/8vfwHH51457eFWXEP3arMW/Nice-Weather?node-id=0%3A1).
 
-#### Diagrama arquitetural
+#### Telas iniciais
 <img src="https://drive.google.com/uc?export=view&id=1sLQSqneaE_HSCCpDydHqY-2HsHXv3Z7G" width="600">
+
+#### Home 
+<img src="https://drive.google.com/uc?export=view&id=1B0csPdHE3xmrdjr54dr1V370rvxdkSpU" width="600">
+
+#### Home - noite
+<img src="https://drive.google.com/uc?export=view&id=1caFSOtiTqpU6s3DEXaymzgOreAXv53GI" width="600">
 
 ## Running the project
 
