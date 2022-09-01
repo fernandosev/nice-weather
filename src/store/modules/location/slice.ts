@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // @Types
-import { WeatherContitions } from "~/@types/weather";
 import { IInitialStateDTO } from "./types";
 
 const initialState = {
   locationLoading: false,
+  isPermissionGranted: false,
+  geolocationError: undefined,
   lat: undefined,
   long: undefined,
 } as IInitialStateDTO;
@@ -14,15 +15,7 @@ const location = createSlice({
   name: "location",
   initialState,
   reducers: {
-    locationRequest(
-      state,
-      _action: PayloadAction<{
-        callbackFunction: (
-          messageType: "success" | "error",
-          messageText: string
-        ) => void;
-      }>
-    ) {
+    locationRequest(state) {
       state.locationLoading = true;
     },
 
@@ -34,17 +27,34 @@ const location = createSlice({
       }>
     ) {
       const { lat, long } = action.payload;
-
       state.lat = lat;
       state.long = long;
+      state.locationLoading = false;
     },
 
     locationFailure(state) {
       state.locationLoading = false;
     },
+
+    setIsPermissionGranted(state, action: PayloadAction<{ granted: boolean }>) {
+      const { granted } = action.payload;
+
+      state.isPermissionGranted = granted;
+    },
+
+    setGeolocationError(state, action: PayloadAction<{ error?: boolean }>) {
+      const { error } = action.payload;
+
+      state.geolocationError = error;
+    },
   },
 });
 
-export const { locationRequest, locationSuccess, locationFailure } =
-  location.actions;
+export const {
+  locationRequest,
+  locationSuccess,
+  locationFailure,
+  setIsPermissionGranted,
+  setGeolocationError,
+} = location.actions;
 export default location.reducer;

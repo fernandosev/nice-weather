@@ -1,11 +1,12 @@
-import React, {FC} from 'react';
+import React, { FC, useEffect, useMemo, useState } from "react";
+import { Animated, Easing } from "react-native";
 
 // Libs
-import {SvgProps} from 'react-native-svg';
+import { SvgProps } from "react-native-svg";
 
 // Components
-import Icon from '~/components/Icon';
-import DotsPopover from '~/components/DotsPopover';
+import Icon from "~/components/Icon";
+import DotsPopover from "~/components/DotsPopover";
 
 // Styles
 import {
@@ -16,47 +17,77 @@ import {
   LeftIconsContainer,
   RightIconsContainer,
   EmptyContainer,
-} from './styles';
-import {colors, metrics} from '~/styles';
+} from "./styles";
+import { colors, metrics } from "~/styles";
 
 // Navigation
-import {goBack} from '~/routes/RootNavigation';
+import { goBack } from "~/routes/RootNavigation";
 
 const Header: React.FC<{
   title: string;
   leftButton?: string | FC<SvgProps>;
   leftButtonColor?: string | undefined;
   leftButtonFunction?: () => void;
-  leftButtonIconClass?: 'MaterialCommunityIcons' | 'Ionicons';
+  leftButtonIconClass?: "MaterialCommunityIcons" | "Ionicons";
   rightButton?: string | undefined;
   rightButtonColor?: string | undefined;
   rightButtonFunction?: () => void;
-  rightButtonIconClass?: 'MaterialCommunityIcons' | 'Ionicons';
+  rightButtonIconClass?: "MaterialCommunityIcons" | "Ionicons";
   actions?: Array<{
     action: () => void;
     iconName: string;
-    iconClass?: 'MaterialCommunityIcons' | 'Ionicons' | undefined;
+    iconClass?: "MaterialCommunityIcons" | "Ionicons" | undefined;
     name: string;
   }>;
+  enableSpinRightButton?: boolean;
 }> = ({
   title,
-  leftButton = '',
+  leftButton = "",
   leftButtonColor,
   leftButtonFunction,
-  leftButtonIconClass = 'Ionicons',
-  rightButton = '',
+  leftButtonIconClass = "Ionicons",
+  rightButton = "",
   rightButtonColor,
   rightButtonFunction = () => {},
-  rightButtonIconClass = 'Ionicons',
+  rightButtonIconClass = "Ionicons",
   actions = [],
+  enableSpinRightButton = false,
 }) => {
-  const leftIconName = typeof leftButton === 'string' ? leftButton : undefined;
-  const LeftSVGIcon = typeof leftButton === 'function' ? leftButton : undefined;
+  const leftIconName = typeof leftButton === "string" ? leftButton : undefined;
+  const LeftSVGIcon = typeof leftButton === "function" ? leftButton : undefined;
 
   const rightIconName =
-    typeof rightButton === 'string' ? rightButton : undefined;
+    typeof rightButton === "string" ? rightButton : undefined;
   const RightSVGIcon =
-    typeof rightButton === 'function' ? rightButton : undefined;
+    typeof rightButton === "function" ? rightButton : undefined;
+
+  const [spinValue, setSpinValue] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    const spinRightButton = Animated.loop(
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    );
+
+    if (enableSpinRightButton) spinRightButton.start();
+    else {
+      spinRightButton.stop();
+      setSpinValue(new Animated.Value(0));
+    }
+  }, [enableSpinRightButton]);
+
+  const spin = useMemo(
+    () =>
+      spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", "360deg"],
+      }),
+    [spinValue]
+  );
 
   return (
     <Container>
@@ -70,7 +101,8 @@ const Header: React.FC<{
               } else {
                 goBack();
               }
-            }}>
+            }}
+          >
             <Icon
               name={leftIconName}
               SVG={LeftSVGIcon}
@@ -91,13 +123,15 @@ const Header: React.FC<{
         <RightIconsContainer>
           {rightButton !== undefined && rightButton.length > 0 && (
             <IconTouchableArea paddingLeft onPress={rightButtonFunction}>
-              <Icon
-                name={rightIconName}
-                SVG={RightSVGIcon}
-                size={metrics.baseIconsMedium}
-                color={rightButtonColor || colors.primaryText}
-                iconClass={rightButtonIconClass}
-              />
+              <Animated.View style={{ transform: [{ rotate: spin }] }}>
+                <Icon
+                  name={rightIconName}
+                  SVG={RightSVGIcon}
+                  size={metrics.baseIconsMedium}
+                  color={rightButtonColor || colors.primaryText}
+                  iconClass={rightButtonIconClass}
+                />
+              </Animated.View>
             </IconTouchableArea>
           )}
 

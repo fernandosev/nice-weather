@@ -51,9 +51,20 @@ const weather = createSlice({
     weatherFailure(state) {
       state.weatherLoading = false;
     },
+
+    clearWeatherData(state) {
+      state.city = undefined;
+      state.temp = undefined;
+      state.weatherCondition = undefined;
+      state.description = undefined;
+    },
   },
 });
 
-export const { weatherRequest, weatherSuccess, weatherFailure } =
-  weather.actions;
+export const {
+  weatherRequest,
+  weatherSuccess,
+  weatherFailure,
+  clearWeatherData,
+} = weather.actions;
 export default weather.reducer;

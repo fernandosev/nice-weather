@@ -1,5 +1,7 @@
 export interface IInitialStateDTO {
   locationLoading: boolean;
+  isPermissionGranted: boolean;
+  geolocationError?: boolean;
   lat?: number;
   long?: number;
 }

@@ -1,44 +1,38 @@
 // Libs
-import { takeLatest, call, put, all } from "redux-saga/effects";
+import { takeLatest, put, all } from "redux-saga/effects";
+import Geolocation, { GeoPosition } from "react-native-geolocation-service";
 
-// Sagas
+// Store
 import { locationRequest, locationSuccess, locationFailure } from "./slice";
+import { setGeolocationError } from "~/store/modules/location/slice";
 
-export function* getCurrentLocation({
-  payload,
-}: {
-  payload: {
-    callbackFunction: (
-      messageType: "success" | "error",
-      messageText: string
-    ) => void;
-  };
-}) {
-  const {
-    callbackFunction,
-  }: {
-    callbackFunction: (
-      messageType: "success" | "error",
-      messageText: string
-    ) => void;
-  } = payload;
+// Get current position
+function getPosition(options): Promise<GeoPosition> {
+  return new Promise((resolve, reject) =>
+    Geolocation.getCurrentPosition(resolve, reject, options)
+  );
+}
 
+export function* getCurrentLocation() {
   try {
+    const position = yield getPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 10000,
+    });
+
+    const { latitude, longitude } = position.coords;
+
+    yield put(setGeolocationError({ error: false }));
     yield put(
       locationSuccess({
-        lat: -16.596546,
-        long: -49.256449,
+        lat: latitude,
+        long: longitude,
       })
     );
-    yield callbackFunction("success", "");
   } catch (err: any) {
-    yield put(locationFailure());
-
-    if (err.response?.data?.message) {
-      yield callbackFunction("error", err.response?.data?.message);
-    } else {
-      yield callbackFunction("error", "Server error. Try again later.");
-    }
+    put(setGeolocationError({ error: true }));
+    put(locationFailure());
   }
 }
 

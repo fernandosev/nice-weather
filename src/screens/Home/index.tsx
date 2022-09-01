@@ -5,6 +5,11 @@ import moment from "moment";
 
 // Store
 import { useAppDispatch, useAppSelector } from "~/store/hooks";
+import {
+  weatherRequest,
+  clearWeatherData,
+} from "~/store/modules/weather/slice";
+import { locationRequest } from "~/store/modules/location/slice";
 
 // Components
 import Icon from "~/components/Icon";
@@ -26,30 +31,42 @@ import { colors } from "~/styles";
 
 // @Types
 import { WeatherContitions } from "~/@types/weather";
-import { weatherRequest } from "~/store/modules/weather/slice";
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { city, temp, description, weatherCondition, weatherLoading } =
     useAppSelector((store) => store.weather);
+  const { lat, long, locationLoading, isPermissionGranted, geolocationError } =
+    useAppSelector((store) => store.location);
 
   const hour = moment().format("HH");
 
   const getWeather = () => {
-    if (!weatherLoading)
+    if (!weatherLoading && lat && long)
       dispatch(
         weatherRequest({
-          lat: -16.596546,
-          long: -49.256449,
+          lat,
+          long,
           callbackFunction: () => {},
         })
       );
   };
 
+  const getLocation = () => {
+    dispatch(clearWeatherData());
+    dispatch(locationRequest());
+  };
+
   useEffect(() => {
-    // getWeather();
-  }, []);
+    getLocation();
+  }, [isPermissionGranted]);
+
+  useEffect(() => {
+    if (!locationLoading && lat !== undefined && long !== undefined) {
+      getWeather();
+    }
+  }, [locationLoading]);
 
   const renderNightIcon = (weather: WeatherContitions) => {
     switch (weather) {
@@ -86,7 +103,7 @@ const Home: React.FC = () => {
   };
 
   const renderColor = (weather: WeatherContitions) => {
-    if (hour >= "18" && hour <= "5") {
+    if ((hour >= "18" && hour <= "23") || (hour >= "00" && hour <= "05")) {
       return colors.night;
     }
 
@@ -107,9 +124,11 @@ const Home: React.FC = () => {
   };
 
   const renderLoadingText = () => {
-    if (weatherLoading) return "Carregando dados climáticos...";
-
-    return "Carregando Localização...";
+    if (locationLoading) return "Obtendo localização atual...";
+    else if (!isPermissionGranted)
+      return "Permita que o app acesse a localização atual!";
+    else if (geolocationError) return "Ative a localização do dispositivo!";
+    else if (weatherLoading) return "Carregando dados climáticos...";
   };
 
   return (
@@ -124,31 +143,38 @@ const Home: React.FC = () => {
         <Header
           title="Nice Weather"
           rightButton="refresh"
-          rightButtonFunction={getWeather}
+          rightButtonFunction={getLocation}
+          enableSpinRightButton={locationLoading || weatherLoading}
         />
       </SafeAreaHeader>
 
-      {!weatherLoading && temp && city && weatherCondition && description && (
-        <CurrentWeatherContainer>
-          <LocationText>{city}</LocationText>
-          <TemperatureContainer>
-            <Icon
-              iconClass="Ionicons"
-              name={
-                hour >= "18" && hour <= "5"
-                  ? renderNightIcon(weatherCondition)
-                  : renderDayIcon(weatherCondition)
-              }
-              size={80}
-              color={colors.secondary}
-            />
-            <TemperatureText>{`${Math.round(temp)}°C`}</TemperatureText>
-          </TemperatureContainer>
-          <WeatherText>{description}</WeatherText>
-        </CurrentWeatherContainer>
-      )}
+      {!locationLoading &&
+        !weatherLoading &&
+        temp &&
+        city &&
+        weatherCondition &&
+        description && (
+          <CurrentWeatherContainer>
+            <LocationText>{city}</LocationText>
+            <TemperatureContainer>
+              <Icon
+                iconClass="Ionicons"
+                name={
+                  (hour >= "18" && hour <= "23") ||
+                  (hour >= "00" && hour <= "05")
+                    ? renderNightIcon(weatherCondition)
+                    : renderDayIcon(weatherCondition)
+                }
+                size={80}
+                color={colors.secondary}
+              />
+              <TemperatureText>{`${Math.round(temp)}°C`}</TemperatureText>
+            </TemperatureContainer>
+            <WeatherText>{description}</WeatherText>
+          </CurrentWeatherContainer>
+        )}
 
-      {weatherLoading && (
+      {(weatherLoading || locationLoading) && (
         <LoadingContainer>
           <LoadingText>{renderLoadingText()}</LoadingText>
         </LoadingContainer>

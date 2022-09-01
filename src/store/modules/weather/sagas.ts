@@ -4,7 +4,7 @@ import { takeLatest, call, put, all } from "redux-saga/effects";
 // Api
 import { api } from "~/services/api";
 
-// Sagas
+// Store
 import { weatherRequest, weatherSuccess, weatherFailure } from "./slice";
 
 // @Types
@@ -37,8 +37,6 @@ export function* getCurrentWeather({
       messageText: string
     ) => void;
   } = payload;
-
-  console.log(API_KEY, API_BASE_URL, lat, long);
 
   try {
     const response: ResponseGenerator = yield call(
