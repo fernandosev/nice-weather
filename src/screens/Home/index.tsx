@@ -43,7 +43,12 @@ const Home: React.FC = () => {
   const hour = moment().format("HH");
 
   const getWeather = () => {
-    if (!weatherLoading && lat && long)
+    if (
+      !weatherLoading &&
+      !locationLoading &&
+      lat !== undefined &&
+      long !== undefined
+    ) {
       dispatch(
         weatherRequest({
           lat,
@@ -51,23 +56,35 @@ const Home: React.FC = () => {
           callbackFunction: () => {},
         })
       );
+    }
   };
 
   const getLocation = () => {
-    if (isPermissionGranted && !geolocationError && !weatherLoading) {
+    if (
+      isPermissionGranted &&
+      !geolocationError &&
+      !weatherLoading &&
+      city === undefined &&
+      temp === undefined &&
+      description === undefined &&
+      weatherCondition === undefined
+    ) {
       dispatch(clearWeatherData());
       dispatch(locationRequest());
     }
   };
 
-  useEffect(() => {
-    getLocation();
-  }, [isPermissionGranted]);
+  const refreshWeather = () => {
+    dispatch(clearWeatherData());
+    dispatch(locationRequest());
+  };
 
   useEffect(() => {
-    if (!locationLoading && lat !== undefined && long !== undefined) {
-      getWeather();
-    }
+    getLocation();
+  }, [isPermissionGranted, weatherLoading]);
+
+  useEffect(() => {
+    getWeather();
   }, [locationLoading]);
 
   const renderNightIcon = (weather: WeatherContitions) => {
@@ -148,7 +165,7 @@ const Home: React.FC = () => {
         <Header
           title="Nice Weather"
           rightButton="refresh"
-          rightButtonFunction={getLocation}
+          rightButtonFunction={refreshWeather}
           enableSpinRightButton={locationLoading || weatherLoading}
         />
       </SafeAreaHeader>
@@ -162,7 +179,7 @@ const Home: React.FC = () => {
         weatherCondition &&
         description && (
           <CurrentWeatherContainer>
-            <LocationText>{city}</LocationText>
+            <LocationText testID="city-text">{city}</LocationText>
             <TemperatureContainer>
               <Icon
                 iconClass="Ionicons"
