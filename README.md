@@ -19,16 +19,20 @@ Designed with Figma, available in:
 - [Nice Weather](https://www.figma.com/file/8vfwHH51457eFWXEP3arMW/Nice-Weather?node-id=0%3A1).
 
 #### Nice Weather
-<img src="https://drive.google.com/uc?export=view&id=1BU9gGMyfHnm_rWEgcwTL6sUiJNw_MeVb" width="150">
+
+<img src="https://raw.githubusercontent.com/fernandosev/nice-weather/main/readme_images/niceWeather.gif" width="250">
 
 #### Screens
-<img src="https://drive.google.com/uc?export=view&id=1sLQSqneaE_HSCCpDydHqY-2HsHXv3Z7G" width="600">
+
+<img src="https://raw.githubusercontent.com/fernandosev/nice-weather/main/readme_images/initial%20screens.png" width="600">
 
 #### Home - day
-<img src="https://drive.google.com/uc?export=view&id=1B0csPdHE3xmrdjr54dr1V370rvxdkSpU" width="600">
+
+<img src="https://raw.githubusercontent.com/fernandosev/nice-weather/main/readme_images/weather%20screens.png" width="600">
 
 #### Home - night
-<img src="https://drive.google.com/uc?export=view&id=1caFSOtiTqpU6s3DEXaymzgOreAXv53GI" width="600">
+
+<img src="https://raw.githubusercontent.com/fernandosev/nice-weather/main/readme_images/night%20weather%20screens.png" width="600">
 
 ## Running the project
 
