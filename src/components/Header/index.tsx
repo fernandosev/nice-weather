@@ -45,11 +45,11 @@ const Header: React.FC<{
   leftButton = "",
   leftButtonColor,
   leftButtonFunction,
-  leftButtonIconClass = "Ionicons",
+  leftButtonIconClass = "MaterialCommunityIcons",
   rightButton = "",
   rightButtonColor,
   rightButtonFunction = () => {},
-  rightButtonIconClass = "Ionicons",
+  rightButtonIconClass = "MaterialCommunityIcons",
   actions = [],
   enableSpinRightButton = false,
 }) => {

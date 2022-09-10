@@ -26,6 +26,10 @@ import {
   TemperatureText,
   LoadingContainer,
   LoadingText,
+  WeatherCards,
+  WeatherCard,
+  WeatherCardTitle,
+  WeatherCardSubtitle,
 } from "./styles";
 import { colors } from "~/styles";
 
@@ -35,8 +39,16 @@ import { WeatherContitions } from "~/@types/weather";
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { city, temp, description, weatherCondition, weatherLoading } =
-    useAppSelector((store) => store.weather);
+  const {
+    city,
+    temp,
+    description,
+    weatherCondition,
+    weatherLoading,
+    feelsLike,
+    humidity,
+    pressure,
+  } = useAppSelector((store) => store.weather);
   const { lat, long, locationLoading, isPermissionGranted, geolocationError } =
     useAppSelector((store) => store.location);
 
@@ -178,7 +190,10 @@ const Home: React.FC = () => {
         temp &&
         city &&
         weatherCondition &&
-        description && (
+        description &&
+        feelsLike &&
+        pressure &&
+        humidity && (
           <CurrentWeatherContainer>
             <LocationText testID="city-text">{city}</LocationText>
             <TemperatureContainer>
@@ -195,6 +210,47 @@ const Home: React.FC = () => {
               <TemperatureText testID="temp-text">{`${Math.round(
                 temp
               )}°C`}</TemperatureText>
+
+              <WeatherCards>
+                <WeatherCard
+                  background={
+                    !weatherLoading && weatherCondition
+                      ? renderColor(weatherCondition)
+                      : undefined
+                  }
+                >
+                  <WeatherCardTitle>{`${Math.round(
+                    feelsLike
+                  )}°C`}</WeatherCardTitle>
+                  <WeatherCardSubtitle>Feels Like</WeatherCardSubtitle>
+                </WeatherCard>
+
+                <WeatherCard
+                  background={
+                    !weatherLoading && weatherCondition
+                      ? renderColor(weatherCondition)
+                      : undefined
+                  }
+                >
+                  <WeatherCardTitle>{`${Math.round(
+                    humidity
+                  )}%`}</WeatherCardTitle>
+                  <WeatherCardSubtitle>Humidity</WeatherCardSubtitle>
+                </WeatherCard>
+
+                <WeatherCard
+                  background={
+                    !weatherLoading && weatherCondition
+                      ? renderColor(weatherCondition)
+                      : undefined
+                  }
+                >
+                  <WeatherCardTitle>{`${Math.round(
+                    pressure
+                  )} hPA`}</WeatherCardTitle>
+                  <WeatherCardSubtitle>Pressure</WeatherCardSubtitle>
+                </WeatherCard>
+              </WeatherCards>
             </TemperatureContainer>
             <WeatherText testID="description-text">{description}</WeatherText>
           </CurrentWeatherContainer>
