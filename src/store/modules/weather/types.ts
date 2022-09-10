@@ -6,13 +6,7 @@ export interface IInitialStateDTO {
   city?: string;
   weatherCondition?: WeatherContitions;
   description?: string;
-}
-
-export interface ResponseGenerator {
-  config?: any;
-  data?: any;
-  headers?: any;
-  request?: any;
-  status?: number;
-  statusText?: string;
+  feelsLike?: number;
+  humidity?: number;
+  pressure?: number;
 }

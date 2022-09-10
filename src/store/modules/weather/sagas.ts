@@ -1,19 +1,16 @@
 // Libs
-import { takeLatest, call, put, all } from "redux-saga/effects";
+import { takeLatest, put, all } from "redux-saga/effects";
 
 // Api
-import { api } from "~/services/api";
+import {
+  getCurrentWeather,
+  WeatherResponseDTO,
+} from "~/services/endpoints/weather";
 
 // Store
 import { weatherRequest, weatherSuccess, weatherFailure } from "./slice";
 
-// @Types
-import { ResponseGenerator } from "./types";
-
-// @ENV
-import { API_BASE_URL, API_KEY } from "@env";
-
-export function* getCurrentWeather({
+export function* _getCurrentWeather({
   payload,
 }: {
   payload: {
@@ -39,19 +36,24 @@ export function* getCurrentWeather({
   } = payload;
 
   try {
-    const response: ResponseGenerator = yield call(
-      api.get,
-      `/weather?lat=${lat}&lon=${long}&lang=pt_br&units=metric&exclude=hourly,daily&apikey=${API_KEY}`
-    );
+    const response: WeatherResponseDTO = yield getCurrentWeather({
+      lat,
+      lon: long,
+    });
 
-    const data = response.data;
+    const { feels_like, humidity, pressure, temp } = response.data.main;
+    const city = response.data.name;
+    const { description, main } = response.data.weather[0];
 
     yield put(
       weatherSuccess({
-        temp: data.main.temp,
-        city: data.name,
-        weatherCondition: data.weather[0].main,
-        description: data.weather[0].description,
+        temp,
+        city,
+        weatherCondition: main,
+        description,
+        feelsLike: feels_like,
+        humidity,
+        pressure,
       })
     );
     yield callbackFunction("success", "");
@@ -66,4 +68,4 @@ export function* getCurrentWeather({
   }
 }
 
-export default all([takeLatest(weatherRequest, getCurrentWeather)]);
+export default all([takeLatest(weatherRequest, _getCurrentWeather)]);
