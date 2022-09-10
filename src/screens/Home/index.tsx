@@ -222,7 +222,7 @@ const Home: React.FC = () => {
                   <WeatherCardTitle>{`${Math.round(
                     feelsLike
                   )}°C`}</WeatherCardTitle>
-                  <WeatherCardSubtitle>Feels Like</WeatherCardSubtitle>
+                  <WeatherCardSubtitle>Sensação</WeatherCardSubtitle>
                 </WeatherCard>
 
                 <WeatherCard
@@ -235,7 +235,7 @@ const Home: React.FC = () => {
                   <WeatherCardTitle>{`${Math.round(
                     humidity
                   )}%`}</WeatherCardTitle>
-                  <WeatherCardSubtitle>Humidity</WeatherCardSubtitle>
+                  <WeatherCardSubtitle>Humidade</WeatherCardSubtitle>
                 </WeatherCard>
 
                 <WeatherCard
@@ -248,7 +248,7 @@ const Home: React.FC = () => {
                   <WeatherCardTitle>{`${Math.round(
                     pressure
                   )} hPA`}</WeatherCardTitle>
-                  <WeatherCardSubtitle>Pressure</WeatherCardSubtitle>
+                  <WeatherCardSubtitle>Pressão</WeatherCardSubtitle>
                 </WeatherCard>
               </WeatherCards>
             </TemperatureContainer>
