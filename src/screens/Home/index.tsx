@@ -235,7 +235,7 @@ const Home: React.FC = () => {
                   <WeatherCardTitle>{`${Math.round(
                     humidity
                   )}%`}</WeatherCardTitle>
-                  <WeatherCardSubtitle>Humidade</WeatherCardSubtitle>
+                  <WeatherCardSubtitle>Umidade</WeatherCardSubtitle>
                 </WeatherCard>
 
                 <WeatherCard
